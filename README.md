@@ -14,6 +14,12 @@ the link and, if it sees that the problem is still there, it breaks it
 again.
 
 
+Installation
+============
+
+	gem install circuit_b
+
+
 Configuration
 =============
 
