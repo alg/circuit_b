@@ -10,5 +10,5 @@ spec = Gem::Specification.new do |s|
   s.rdoc_options     << '--title' <<  'CircuitB - Distributed circuit breaker'
   s.author           = "Aleksey Gureiev"
   s.email            = "spyromus@noizeramp.com"
-  s.homepage         = "http://blog.noizeramp.com"
+  s.homepage         = "http://github.com/alg/circuit_b"
 end
