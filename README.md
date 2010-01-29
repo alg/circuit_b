@@ -17,34 +17,34 @@ again.
 Configuration
 =============
 
-  CircuitB.configure do |c|
+    CircuitB.configure do |c|
 
-    # Configure the storage that will be used to store the
-    # state of the fuses across multiple invocations.
-    # There are Memory- and Redis-based stores:
-    #   - Memore store is good when you don't have
-    #     several threads working with the same fuse,
-    #     like in Rails or other multi-threaded environments.
-    #   - Redis store is good for shared multi-threaded
-    #     environments.
-    c.state_storage = CircuitB::Storage::Redis.new
+	    # Configure the storage that will be used to store the
+	    # state of the fuses across multiple invocations.
+	    # There are Memory- and Redis-based stores:
+	    #   - Memore store is good when you don't have
+	    #     several threads working with the same fuse,
+	    #     like in Rails or other multi-threaded environments.
+	    #   - Redis store is good for shared multi-threaded
+	    #     environments.
+	    c.state_storage = CircuitB::Storage::Redis.new
 
-    # Configure the default fuse configuration that will be
-    # used as the basis when you add your custom fuses. You
-    # can specify only the parameters you want to override then.
-    config.default_fuse_config = {
-      :allowed_failures => 2,
-      :cool_off_period  => 3  # seconds
-    }
+	    # Configure the default fuse configuration that will be
+	    # used as the basis when you add your custom fuses. You
+	    # can specify only the parameters you want to override then.
+	    config.default_fuse_config = {
+	      :allowed_failures => 2,
+	      :cool_off_period  => 3  # seconds
+	    }
 
-    # Adds a fuse named "mail" that is configured to tolerate
-    # 5 failures before opening. After the cool off period
-    # of 60 seconds it will close again. During the cool-off
-    # time it will be raising FastFailure's without even
-    # executing the code to protect the system from overload.
-    c.add_fuse "mail", :allowed_failures => 5, :cool_off_period => 60
+	    # Adds a fuse named "mail" that is configured to tolerate
+	    # 5 failures before opening. After the cool off period
+	    # of 60 seconds it will close again. During the cool-off
+	    # time it will be raising FastFailure's without even
+	    # executing the code to protect the system from overload.
+	    c.add_fuse "mail", :allowed_failures => 5, :cool_off_period => 60
   
-  end
+	  end
 
 
 Available storages
@@ -67,9 +67,9 @@ Usage
 
 Every time you want to protect a piece of code, you do this:
 
-  CircuitB("mail") do
-    # Attempting to send mail
-  end
+	  CircuitB("mail") do
+	    # Attempting to send mail
+	  end
 
 Note, that in order to use "mail" fuse you need to add it to your
 configuration first (see above).
