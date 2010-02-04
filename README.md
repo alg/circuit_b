@@ -42,7 +42,7 @@ Configuration
 			:on_break         => [ :rails_log, lambda { do_something } ],
 			:allowed_failures => 2,
 			:cool_off_period  => 3	# seconds
-			:timeout					=> 3  # seconds, defaults to 5
+			:timeout          => 3  # seconds, defaults to 5
 		}
 
 		# Adds a fuse named "mail" that is configured to tolerate
