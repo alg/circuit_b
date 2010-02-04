@@ -19,18 +19,18 @@ class CircuitB::TestConfiguration < Test::Unit::TestCase
   end
   
   should "add a named fuse with default configuration" do
-    @config.add_fuse "fuse_name"
+    @config.fuse "fuse_name"
     assert_equal 1, @config.fuses.size
   end
   
   should "add a named fuse with custom configuration" do
-    @config.add_fuse "fuse_name", :allowed_failures => 5
+    @config.fuse "fuse_name", :allowed_failures => 5
   end
   
   should "disallow adding fuses with the same name" do
-    @config.add_fuse "fuse_name"
+    @config.fuse "fuse_name"
     begin
-      @config.add_fuse "fuse_name"
+      @config.fuse "fuse_name"
       fail "should raise an exception"
     rescue
       # Exception is expected

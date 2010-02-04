@@ -3,7 +3,16 @@ require 'circuit_b/storage/base'
 module CircuitB
   class Fuse
 
-    attr_reader :config
+    # Maximum time the handler is allowed to execute
+    DEFAULT_BREAK_HANDLER_TIMEOUT = 5
+    
+    # Standard handlers that can be refered by their names
+    STANDARD_HANDLERS = {
+      :rails_log => lambda { |fuse| RAILS_DEFAULT_LOGGER.error("CircuitB: Fuse '#{fuse.name}' has broken") }
+    }
+
+    attr_reader :name, :config
+    attr_accessor :break_handler_timeout
 
     def initialize(name, state_storage, config)
       raise "Name must be specified" if name.nil?
@@ -14,6 +23,8 @@ module CircuitB
       @name          = name
       @state_storage = state_storage
       @config        = config
+      
+      @break_handler_timeout = DEFAULT_BREAK_HANDLER_TIMEOUT
     end
 
     def wrap(&block)
@@ -21,10 +32,14 @@ module CircuitB
       raise CircuitB::FastFailure if open?
       
       begin
-        block.call
+        if @config[:timeout] && @config[:timeout].to_f > 0
+          Timeout::timeout(@config[:timeout].to_f) { block.call }
+        else
+          block.call
+        end
 
         put(:failures, 0)
-      rescue => e
+      rescue Exception => e
         # Save the time of the last failure
         put(:last_failure_at, Time.now.to_i)
       
@@ -57,6 +72,24 @@ module CircuitB
     # Open the fuse
     def open
       put(:state, :open)
+      
+      if config[:on_break]
+        require 'timeout'
+        
+        handlers = [ config[:on_break] ].flatten.map { |handler| (handler.is_a?(Symbol) ? STANDARD_HANDLERS[handler] : handler) }.compact
+
+        handlers.each do |handler|
+          begin
+            Timeout::timeout(@break_handler_timeout) {
+              handler.call(self)
+            }
+          rescue Timeout::Error
+            # We ignore handler timeouts
+          rescue
+            # We ignore handler errors
+          end
+        end
+      end
     end
     
     def get(field)

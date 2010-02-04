@@ -15,7 +15,7 @@ class TestCircuitB < Test::Unit::TestCase
           :cool_off_period  => 3  # seconds
         }
 
-        config.add_fuse("mail", {
+        config.fuse("mail", {
           :allowed_failures => 5,
           :cool_off_period  => 10 # seconds
         })
@@ -30,10 +30,16 @@ class TestCircuitB < Test::Unit::TestCase
   
   context "using fuses to protect code" do
     setup do
+      begin
+        CircuitB::Storage::Redis.new.get('dummy', 'field')
+      rescue Errno::ECONNREFUSED => e
+        fail "Please start Redis on default port"
+      end
+      
       CircuitB.reset_configuration
       CircuitB.configure do |c|
         c.state_storage = CircuitB::Storage::Redis.new
-        c.add_fuse "fuse_name", :allowed_failures => 1, :cool_off_period => 10
+        c.fuse "fuse_name", :allowed_failures => 1, :cool_off_period => 10
       end
     end
     

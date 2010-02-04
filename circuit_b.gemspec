@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name             = 'circuit_b'
-  s.version          = '1.0'
+  s.version          = '1.1'
   s.summary          = 'Distributed circuit breaker'
   s.description      = 'Classic circuit breaker to protect resources from being accessed over and over while in pain.'
   s.files            = Dir['lib/**/*.rb'] + Dir['test/**/*.rb']

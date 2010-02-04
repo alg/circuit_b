@@ -38,9 +38,11 @@ Configuration
 		# Configure the default fuse configuration that will be
 		# used as the basis when you add your custom fuses. You
 		# can specify only the parameters you want to override then.
-		config.default_fuse_config = {
+		c.default_fuse_config = {
+			:on_break         => [ :rails_log, lambda { do_something } ],
 			:allowed_failures => 2,
 			:cool_off_period  => 3	# seconds
+			:timeout					=> 3  # seconds, defaults to 5
 		}
 
 		# Adds a fuse named "mail" that is configured to tolerate
@@ -48,7 +50,7 @@ Configuration
 		# of 60 seconds it will close again. During the cool-off
 		# time it will be raising FastFailure's without even
 		# executing the code to protect the system from overload.
-		c.add_fuse "mail", :allowed_failures => 5, :cool_off_period => 60
+		c.fuse "mail", :allowed_failures => 5, :cool_off_period => 60
 
 	end
 
@@ -66,6 +68,48 @@ the fuse state that you can use:
 * _CircuitB::Storage::Redis_ -- Redis-based storage. Well-suited
 	for distributed setups (like multiple workers in Rails and alike)
 	and acts like a simple IPC.
+
+
+Acting on Fuse Breaks
+=====================
+
+When the ciruit is broken, meaning that your wrapped code has produced
+so many errors that we had to isolate it, the fuse opens and starts to
+fail fast. You may want to act in one way or another when it happens.
+There's a fuse configuration option `on_break` that accepts one or more
+elements describing what you want to do.
+
+*Logging.* One of the common steps is to log the event. There's a
+standard logging feature (`:rails_log`) that writes a message to the
+default Rails log. If you don't use Rails, you can use the next feature
+to take care of your logging.
+
+	config.fuse "test", :on_break => :rails_log
+
+*Handling.* If you want to handle the event in some custom way, you
+can provide a `Proc` that will be executed upon event. One common case
+is to write to the log. 
+
+	config.fuse "test", :on_break => lambda { |fuse| puts "Fuse #{fuse.name} has just broke the circuit" }
+
+To specify more than one handler, you can use an array:
+
+	config.fuse "test", :on_break => [ :rails_log, lambda { ... }, lambda { ... } ]
+
+
+Code execution timeouts
+=======================
+
+To protect your code from executing for too long, fuses in CircuitB can
+execute it wrapped into the timeout statements. All you have to do is
+to configure a fuse to use timeouts logic, like this (to allow 5 second for
+wrapped code execution):
+
+	config.fuse "test", :timeout => 2
+
+To disable timeouts (which isn't a great idea), use `:timeout => false`.
+
+By default, all fuses use 5 second timeouts.
 
 
 Usage
@@ -89,9 +133,7 @@ it all in one place.
 To Do
 =====
 
-* notifications and logging
 * half-open state to open back faster if the problem still exists
-* internal code block execution timeout support
 * incrementing cool-off period on recurring errors (in half-open state)
 * CouchDB storage
 * Memcached storage
