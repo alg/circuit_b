@@ -13,6 +13,16 @@ After a certain period of time, circuit breaker attempts to restore
 the link and, if it sees that the problem is still there, it breaks it
 again.
 
+So essentially, there are following states:
+
+* _Closed_ - normally operating fuse. The protected code is executed,
+  falues are counted and compared against the allowed total. Switches
+  to _opened_ state upon reaching the `allowed_failures`.
+
+* _Opened_ - the circuit is broken. None of the calls are passed to
+  the protected block, but fail fast with the `FastFailure` exception.
+  The fuse closes automatically after the `cool_off_period`.
+
 
 Installation
 ============
@@ -144,7 +154,7 @@ To Do
 * CouchDB storage
 * Memcached storage
 * passing storage configuration through the initializer
-
+* frequency-based breaking (5 breaks a year don't count, but 5 breaks a minute do)
 
 License
 =======
