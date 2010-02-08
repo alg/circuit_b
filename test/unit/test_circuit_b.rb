@@ -53,6 +53,12 @@ class TestCircuitB < Test::Unit::TestCase
       assert executed, "Code wasn't executed"
     end
     
+    should "pass the execution result back" do
+      assert_equal "result", CircuitB("fuse_name") do
+        "result"
+      end
+    end
+    
     should "error out if the fuse doesn't exist" do
       begin
         CircuitB("non_existent_fuse") do

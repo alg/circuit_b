@@ -22,7 +22,7 @@ module CircuitB
     raise "Fuse with the name '#{name}' is not registered" unless fuse = configuration.fuses[name]
     
     if block
-      fuse.wrap(&block)
+      return fuse.wrap(&block)
     else
       return fuse
     end

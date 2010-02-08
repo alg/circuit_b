@@ -32,13 +32,17 @@ module CircuitB
       raise CircuitB::FastFailure if open?
       
       begin
+        result = nil
+        
         if @config[:timeout] && @config[:timeout].to_f > 0
-          Timeout::timeout(@config[:timeout].to_f) { block.call }
+          Timeout::timeout(@config[:timeout].to_f) { result = block.call }
         else
-          block.call
+          result = block.call
         end
 
         put(:failures, 0)
+        
+        return result
       rescue Exception => e
         # Save the time of the last failure
         put(:last_failure_at, Time.now.to_i)

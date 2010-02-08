@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{circuit_b}
-  s.version = "1.1"
+  s.version = "1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksey Gureiev"]
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "CHANGELOG.md",
      "MIT-LICENSE",
      "README.md",
+     "Rakefile",
      "circuit_b.gemspec",
      "lib/circuit_b.rb",
      "lib/circuit_b/configuration.rb",

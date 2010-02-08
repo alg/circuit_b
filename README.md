@@ -45,12 +45,12 @@ Configuration
 			:timeout          => 3  # seconds, defaults to 5
 		}
 
-		# Adds a fuse named "mail" that is configured to tolerate
+		# Adds a fuse named "shipping" that is configured to tolerate
 		# 5 failures before opening. After the cool off period
 		# of 60 seconds it will close again. During the cool-off
 		# time it will be raising FastFailure's without even
 		# executing the code to protect the system from overload.
-		c.fuse "mail", :allowed_failures => 5, :cool_off_period => 60
+		c.fuse "shipping", :allowed_failures => 5, :cool_off_period => 60
 
 	end
 
@@ -117,11 +117,17 @@ Usage
 
 Every time you want to protect a piece of code, you do this:
 
-	CircuitB("mail") do
-		# Attempting to send mail
+	CircuitB("shipping") do
+		# Attempting to estimate shipping
 	end
 
-Note, that in order to use "mail" fuse you need to add it to your
+or, if you need the value back:
+
+	shipping_cost = CircuitB("shipping") do
+		get_shipping_estimate(...)
+	end
+
+Note, that in order to use "shipping" fuse you need to add it to your
 configuration first (see above).
 
 You can use fuses in any number of places, but since the state is
