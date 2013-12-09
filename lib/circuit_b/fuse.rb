@@ -5,7 +5,7 @@ module CircuitB
 
     # Maximum time the handler is allowed to execute
     DEFAULT_BREAK_HANDLER_TIMEOUT = 5
-    
+
     # Standard handlers that can be refered by their names
     STANDARD_HANDLERS = {
       :rails_log => lambda { |fuse| RAILS_DEFAULT_LOGGER.error("CircuitB: Fuse '#{fuse.name}' has broken") }
@@ -19,21 +19,21 @@ module CircuitB
       raise "Storage must be specified" if state_storage.nil?
       raise "Storage must be of CircuitB::Storage::Base kind" unless state_storage.kind_of?(CircuitB::Storage::Base)
       raise "Config must be specified" if config.nil?
-      
+
       @name          = name
       @state_storage = state_storage
       @config        = config
-      
+
       @break_handler_timeout = DEFAULT_BREAK_HANDLER_TIMEOUT
     end
 
     def wrap(&block)
       close_if_cooled_off if open?
       raise CircuitB::FastFailure if open?
-      
+
       begin
         result = nil
-        
+
         if @config[:timeout] && @config[:timeout].to_f > 0
           Timeout::timeout(@config[:timeout].to_f) { result = block.call }
         else
@@ -41,29 +41,30 @@ module CircuitB
         end
 
         put(:failures, 0)
-        
+
         return result
       rescue Exception => e
         # Save the time of the last failure
         put(:last_failure_at, Time.now.to_i)
-      
+
         # Increment the number of failures and open if the limit has been reached
         failures = inc(:failures)
         open if failures >= @config[:allowed_failures]
-      
+
         # Re-raise the original exception
         raise e
       end
     end
-    
+
     def open?
-      get(:state) == :open
+      # get(:state) == :open # redis store returns strings not symbols
+      get(:state) && get(:state).to_sym == :open
     end
 
     def failures
       get(:failures)
     end
-    
+
     private
 
     def close_if_cooled_off
@@ -72,14 +73,14 @@ module CircuitB
         put(:failures, 0)
       end
     end
-    
+
     # Open the fuse
     def open
       put(:state, :open)
-      
+
       if config[:on_break]
         require 'timeout'
-        
+
         handlers = [ config[:on_break] ].flatten.map { |handler| (handler.is_a?(Symbol) ? STANDARD_HANDLERS[handler] : handler) }.compact
 
         handlers.each do |handler|
@@ -95,15 +96,15 @@ module CircuitB
         end
       end
     end
-    
+
     def get(field)
       @state_storage.get(@name, field)
     end
-    
+
     def put(field, value)
       @state_storage.put(@name, field, value)
     end
-    
+
     def inc(field)
       @state_storage.inc(@name, field)
     end
