@@ -71,6 +71,7 @@ module CircuitB
       if Time.now.to_i - get(:last_failure_at).to_i > config[:cool_off_period]
         put(:state, :closed)
         put(:failures, 0)
+        RAILS_DEFAULT_LOGGER.info("Opening fuse #{@name}")
       end
     end
 
