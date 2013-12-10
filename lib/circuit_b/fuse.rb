@@ -65,6 +65,12 @@ module CircuitB
       get(:failures)
     end
 
+    def reset
+      put(:state, :closed)
+      put(:failures, 0)
+      put(:last_failure_at, nil)
+    end
+
     private
 
     def close_if_cooled_off
