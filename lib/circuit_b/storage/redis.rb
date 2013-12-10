@@ -8,7 +8,7 @@ module CircuitB
       def initialize
         host = ENV['REDIS_HOST'] || 'localhost'
         port = ENV['REDIS_PORT'] || '6379'
-        @redis = ::Redis.new(host, port)
+        @redis = ::Redis.new(host: host, port: port)
       end
 
       def put(fuse_name, field, value)
