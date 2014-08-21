@@ -8,7 +8,17 @@ module CircuitB
     
     # Standard handlers that can be refered by their names
     STANDARD_HANDLERS = {
-      :rails_log => lambda { |fuse| RAILS_DEFAULT_LOGGER.error("CircuitB: Fuse '#{fuse.name}' has broken") }
+      :rails_log => lambda do |fuse|
+        if defined? RAILS_DEFAULT_LOGGER
+          logger = RAILS_DEFAULT_LOGGER
+        elsif defined? Rails
+          logger = Rails.logger
+        end
+
+        return unless logger
+
+        logger.error("CircuitB: Fuse '#{fuse.name}' has broken")
+      end
     }
 
     attr_reader :name, :config
