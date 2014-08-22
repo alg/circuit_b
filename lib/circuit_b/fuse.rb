@@ -8,7 +8,9 @@ module CircuitB
 
     # Standard handlers that can be refered by their names
     STANDARD_HANDLERS = {
-      :rails_log => lambda { |fuse| RAILS_DEFAULT_LOGGER.error("CircuitB: Fuse '#{fuse.name}' has broken") }
+      :rails_log => lambda do |fuse|
+        Rails.logger.error("CircuitB: Fuse '#{fuse.name}' has broken")
+      end
     }
 
     attr_reader :name, :config
@@ -77,7 +79,8 @@ module CircuitB
       if Time.now.to_i - get(:last_failure_at).to_i > config[:cool_off_period]
         put(:state, :closed)
         put(:failures, 0)
-        RAILS_DEFAULT_LOGGER.info("Opening fuse #{@name}")
+
+        Rails.logger.info("Opening fuse #{@name}")
       end
     end
 
