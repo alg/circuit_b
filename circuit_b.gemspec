@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Distributed circuit breaker}
   s.test_files = [
-    "test/test_helper.rb",
+     "test/test_helper.rb",
      "test/unit/circuit_b/test_configuration.rb",
      "test/unit/circuit_b/test_fuse.rb",
      "test/unit/test_circuit_b.rb"
@@ -60,5 +60,11 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<shoulda>, [">= 2.10.3"])
     s.add_dependency(%q<timecop>, [">= 0.3.4"])
   end
+
+  s.add_runtime_dependency 'redis'
+
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'jeweler'
+  s.add_development_dependency 'pry'
 end
 

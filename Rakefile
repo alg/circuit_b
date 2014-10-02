@@ -25,7 +25,7 @@ end
  
 Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
  
-task :default => [:check_dependencies, :test]
+task :default => [:test]
  
 require 'rake/clean'
 CLEAN.include %w(**/*.{log,pyc})
