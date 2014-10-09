@@ -4,61 +4,60 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{circuit_b}
-  s.version = "1.2.5"
+  s.name = 'circuit_b'
+  s.version = '1.2.5'
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Aleksey Gureiev"]
-  s.date = %q{2010-02-04}
-  s.description = %q{Classic circuit breaker to protect resources from being accessed over and over while in pain.}
-  s.email = %q{spyromus@noizeramp.com}
+  s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
+  s.authors = ['Aleksey Gureiev']
+  s.date = '2010-02-04'
+  s.description = 'Classic circuit breaker to protect resources from being accessed over and over while in pain.'
+  s.email = 'spyromus@noizeramp.com'
   s.extra_rdoc_files = [
-    "README.md"
+    'README.md'
   ]
   s.files = [
-    "CHANGELOG.md",
-     "MIT-LICENSE",
-     "README.md",
-     "Rakefile",
-     "circuit_b.gemspec",
-     "lib/circuit_b.rb",
-     "lib/circuit_b/configuration.rb",
-     "lib/circuit_b/fuse.rb",
-     "lib/circuit_b/storage.rb",
-     "lib/circuit_b/storage/base.rb",
-     "lib/circuit_b/storage/memory.rb",
-     "lib/circuit_b/storage/redis.rb",
-     "test/test_helper.rb",
-     "test/unit/circuit_b/test_configuration.rb",
-     "test/unit/circuit_b/test_fuse.rb",
-     "test/unit/test_circuit_b.rb"
+    'CHANGELOG.md',
+    'MIT-LICENSE',
+    'README.md',
+    'Rakefile',
+    'circuit_b.gemspec',
+    'lib/circuit_b.rb',
+    'lib/circuit_b/configuration.rb',
+    'lib/circuit_b/fuse.rb',
+    'lib/circuit_b/storage.rb',
+    'lib/circuit_b/storage/base.rb',
+    'lib/circuit_b/storage/memory.rb',
+    'lib/circuit_b/storage/redis.rb',
+    'test/test_helper.rb',
+    'test/unit/circuit_b/test_configuration.rb',
+    'test/unit/circuit_b/test_fuse.rb',
+    'test/unit/test_circuit_b.rb'
   ]
-  s.homepage = %q{http://github.com/alg/circuit_b}
-  s.rdoc_options = ["--charset=UTF-8"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
-  s.summary = %q{Distributed circuit breaker}
+  s.homepage = 'http://github.com/alg/circuit_b'
+  s.rdoc_options = ['--charset=UTF-8']
+  s.require_paths = ['lib']
+  s.rubygems_version = '1.3.5'
+  s.summary = 'Distributed circuit breaker'
   s.test_files = [
-     "test/test_helper.rb",
-     "test/unit/circuit_b/test_configuration.rb",
-     "test/unit/circuit_b/test_fuse.rb",
-     "test/unit/test_circuit_b.rb"
+    'test/test_helper.rb',
+    'test/unit/circuit_b/test_configuration.rb',
+    'test/unit/circuit_b/test_fuse.rb',
+    'test/unit/test_circuit_b.rb'
   ]
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+  if s.respond_to? :specification_version
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<shoulda>, [">= 2.10.3"])
-      s.add_development_dependency(%q<timecop>, [">= 0.3.4"])
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0')
+      s.add_development_dependency('shoulda', ['>= 2.10.3'])
+      s.add_development_dependency('timecop', ['>= 0.3.4'])
     else
-      s.add_dependency(%q<shoulda>, [">= 2.10.3"])
-      s.add_dependency(%q<timecop>, [">= 0.3.4"])
+      s.add_dependency('shoulda', ['>= 2.10.3'])
+      s.add_dependency('timecop', ['>= 0.3.4'])
     end
   else
-    s.add_dependency(%q<shoulda>, [">= 2.10.3"])
-    s.add_dependency(%q<timecop>, [">= 0.3.4"])
+    s.add_dependency('shoulda', ['>= 2.10.3'])
+    s.add_dependency('timecop', ['>= 0.3.4'])
   end
 
   s.add_runtime_dependency 'redis'
@@ -66,5 +65,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'fakeredis'
+  s.add_development_dependency 'rubocop'
 end
-

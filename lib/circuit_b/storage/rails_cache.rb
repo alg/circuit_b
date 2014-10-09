@@ -4,7 +4,6 @@ require 'redis'
 module CircuitB
   module Storage
     class RailsCache < Base
-
       def initialize
         @cache = ::Rails.cache
       end
@@ -18,7 +17,7 @@ module CircuitB
       end
 
       def inc(fuse_name, field)
-        return @cache.increment(key(fuse_name, field))
+        @cache.increment(key(fuse_name, field))
       end
 
       private

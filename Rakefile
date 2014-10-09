@@ -2,11 +2,14 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
+require 'rubocop/rake_task'
 
 Rake::TestTask.new do |t|
-  t.pattern = 'test/**/test_*'
+  t.pattern = 'test/unit/**/test_*'
   t.test_files = ['test/test_helper.rb']
-  t.verbose = true
+  t.verbose = false
 end
 
-task default: :test
+RuboCop::RakeTask.new(:rubocop)
+
+task default: [:rubocop, :test]

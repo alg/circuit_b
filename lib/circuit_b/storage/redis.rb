@@ -4,7 +4,6 @@ require 'redis'
 module CircuitB
   module Storage
     class Redis < Base
-
       def initialize
         host = ENV['REDIS_HOST'] || 'localhost'
         port = ENV['REDIS_PORT'] || '6379'
@@ -20,7 +19,7 @@ module CircuitB
       end
 
       def inc(fuse_name, field)
-        return @redis.incr(key(fuse_name, field))
+        @redis.incr(key(fuse_name, field))
       end
 
       private

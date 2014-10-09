@@ -1,0 +1,32 @@
+Documentation:
+  Enabled: false
+
+Lint/HandleExceptions:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 25
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Style/Alias:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/MethodName:
+  Enabled: false

@@ -1,17 +1,16 @@
 module CircuitB
   module Storage
     class Base
-      
-      def put(fuse_name, field, value)
-        raise "Unimplemented"
-      end
-      
-      def get(fuse_name, field)
-        raise "Unimplemented"
+      def put(_fuse_name, _field, _value)
+        fail 'Unimplemented'
       end
 
-      def inc(fuse_name, field)
-        raise "Unimplemented"
+      def get(_fuse_name, _field)
+        fail 'Unimplemented'
+      end
+
+      def inc(_fuse_name, _field)
+        fail 'Unimplemented'
       end
     end
   end
