@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/../../test_helper"
 require "circuit_b/configuration"
 
-class CircuitB::TestConfiguration < Test::Unit::TestCase
+class CircuitB::TestConfiguration < Minitest::Test
 
   def setup
     @config = CircuitB::Configuration.new

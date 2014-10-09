@@ -9,7 +9,7 @@ module CircuitB
     # Standard handlers that can be refered by their names
     STANDARD_HANDLERS = {
       :rails_log => lambda do |fuse|
-        Rails.logger.error("CircuitB: Fuse '#{fuse.name}' has broken")
+        log_error "CircuitB: Fuse '#{fuse.name}' has broken"
       end
     }
 
@@ -80,7 +80,7 @@ module CircuitB
         put(:state, :closed)
         put(:failures, 0)
 
-        Rails.logger.info("Opening fuse #{@name}")
+        log_info "Opening fuse #{@name}"
       end
     end
 
@@ -117,6 +117,14 @@ module CircuitB
 
     def inc(field)
       @state_storage.inc(@name, field)
+    end
+
+    def log_info(message)
+      ::Rails.logger.info(message) if defined?(::Rails)
+    end
+
+    def log_error(message)
+      ::Rails.logger.error(message) if defined?(::Rails)
     end
   end
 end

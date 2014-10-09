@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/../../test_helper"
 require "circuit_b"
 
-class CircuitB::TestFuse < Test::Unit::TestCase
+class CircuitB::TestFuse < Minitest::Test
   
   context "initialization" do
     should "not allow nil names" do

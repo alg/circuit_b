@@ -1,9 +1,8 @@
-require File.dirname(__FILE__) + "/../test_helper"
 require "circuit_b"
 require "circuit_b/configuration"
 require "circuit_b/storage"
 
-class TestCircuitB < Test::Unit::TestCase
+class TestCircuitB < Minitest::Test
   
   context "configuration" do
     should "accept configuration paramters" do
@@ -54,9 +53,10 @@ class TestCircuitB < Test::Unit::TestCase
     end
     
     should "pass the execution result back" do
-      assert_equal "result", CircuitB("fuse_name") do
+      result = CircuitB("fuse_name") do
         "result"
       end
+      assert_equal "result", result
     end
     
     should "error out if the fuse doesn't exist" do
