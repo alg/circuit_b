@@ -37,6 +37,7 @@ class TestCircuitB < Minitest::Spec
         c.state_storage = CircuitB::Storage::Redis.new
         c.fuse 'fuse_name', allowed_failures: 1, cool_off_period: 10
       end
+      CircuitB('fuse_name').reset
     end
 
     should 'let wrap the code with fuse' do
