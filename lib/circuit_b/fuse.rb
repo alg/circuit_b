@@ -59,7 +59,7 @@ module CircuitB
 
     def open?
       # get(:state) == :open # redis store returns strings not symbols
-      get(:state) && get(:state).to_sym == :open
+      get(:state).to_sym == :open if get(:state)
     end
 
     def failures
