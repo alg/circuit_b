@@ -117,11 +117,11 @@ module CircuitB
     end
 
     def log_info(message)
-      ::Rails.logger.info(message) if defined?(::Rails)
+      ::Rails.logger.info(message) if defined?(::Rails.logger)
     end
 
     def log_error(message)
-      ::Rails.logger.error(message) if defined?(::Rails)
+      ::Rails.logger.error(message) if defined?(::Rails.logger)
     end
   end
 end

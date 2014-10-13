@@ -57,6 +57,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   circuit_b!
   fakeredis
   pry

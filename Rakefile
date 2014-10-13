@@ -7,7 +7,7 @@ require 'rubocop/rake_task'
 Rake::TestTask.new do |t|
   t.pattern = 'test/unit/**/test_*'
   t.test_files = ['test/test_helper.rb']
-  t.verbose = false
+  t.verbose = true
 end
 
 RuboCop::RakeTask.new(:rubocop)

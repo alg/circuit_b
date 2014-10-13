@@ -9,7 +9,7 @@ module CircuitB
       end
 
       def put(fuse_name, field, value)
-        @cache.write(key(fuse_name, field), value)
+        value if @cache.write(key(fuse_name, field), value)
       end
 
       def get(fuse_name, field)
@@ -17,7 +17,9 @@ module CircuitB
       end
 
       def inc(fuse_name, field)
-        @cache.increment(key(fuse_name, field))
+        k = key(fuse_name, field)
+        @cache.write(k, 0) unless @cache.read(k)
+        @cache.increment(k)
       end
 
       private
