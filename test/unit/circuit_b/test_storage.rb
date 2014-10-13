@@ -1,4 +1,5 @@
 require 'active_support'
+require 'redis-activesupport'
 
 # This is hacks but required to test Rails cache backend correctly
 module Rails
@@ -6,8 +7,6 @@ module Rails
     attr_accessor :cache
   end
 end
-
-
 
 module CircuitB
   module Storage
@@ -45,9 +44,17 @@ module CircuitB
       storage_ops.call
     end
 
-    describe 'rails cache store' do
+    describe 'rails cache store memory_store' do
       before do
         ::Rails.cache = ActiveSupport::Cache.lookup_store :memory_store
+        @store = RailsCache.new
+      end
+      storage_ops.call
+    end
+
+    describe 'rails cache store redis_store' do
+      before do
+        ::Rails.cache = ActiveSupport::Cache.lookup_store :redis_store
         @store = RailsCache.new
       end
       storage_ops.call
