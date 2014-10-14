@@ -18,8 +18,10 @@ module CircuitB
 
       def inc(fuse_name, field)
         k = key(fuse_name, field)
-        @cache.write(k, 0) unless @cache.read(k)
-        @cache.increment(k)
+        cur = @cache.read(k) || 0
+        new = cur + 1
+        @cache.write(k, new)
+        new
       end
 
       private

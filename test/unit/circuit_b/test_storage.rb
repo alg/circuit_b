@@ -1,17 +1,12 @@
-require 'active_support'
-require 'redis-activesupport'
-
-# This is hacks but required to test Rails cache backend correctly
-module Rails
-  class << self
-    attr_accessor :cache
-  end
-end
-
 module CircuitB
   module Storage
     storage_ops = -> do
-      describe 'storage operations' do
+
+      describe 'storage' do
+        before do
+          @store.put('fuse_name', 'field', nil)
+        end
+
         it 'stores fuse states with put and return value' do
           val = @store.put('fuse_name', 'field', 'value')
           assert_equal val, 'value'
@@ -24,8 +19,10 @@ module CircuitB
         end
 
         it 'increments fuses with inc and return counter' do
-          val = @store.inc('fuse_name', 'inc_field')
-          assert_equal val, 1
+          val1 = @store.inc('fuse_name', 'field')
+          assert_equal val1, 1
+          val2 = @store.inc('fuse_name', 'field')
+          assert_equal val2, 2
         end
       end
     end
@@ -46,18 +43,18 @@ module CircuitB
 
     describe 'rails cache store memory_store' do
       before do
-        ::Rails.cache = ActiveSupport::Cache.lookup_store :memory_store
         @store = RailsCache.new
       end
       storage_ops.call
     end
 
     describe 'rails cache store redis_store' do
+      ::Rails.cache = ActiveSupport::Cache.lookup_store :redis_store
       before do
-        ::Rails.cache = ActiveSupport::Cache.lookup_store :redis_store
         @store = RailsCache.new
       end
       storage_ops.call
+      ::Rails.cache = ActiveSupport::Cache.lookup_store :memory_store
     end
   end
 end
