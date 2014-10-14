@@ -58,12 +58,11 @@ module CircuitB
     end
 
     def open?
-      # get(:state) == :open # redis store returns strings not symbols
       get(:state).to_sym == :open if get(:state)
     end
 
     def failures
-      get(:failures)
+      get(:failures).to_i
     end
 
     def reset

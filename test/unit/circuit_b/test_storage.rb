@@ -1,6 +1,6 @@
 module CircuitB
   module Storage
-    storage_ops = -> do
+    storage_ops = lambda do
 
       describe 'storage' do
         before do
@@ -13,7 +13,7 @@ module CircuitB
         end
 
         it 'gets fuse states with get' do
-          val = @store.put('fuse_name', 'field', 'value')
+          @store.put('fuse_name', 'field', 'value')
           val = @store.get('fuse_name', 'field')
           assert_equal val, 'value'
         end

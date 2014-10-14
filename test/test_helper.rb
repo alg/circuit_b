@@ -2,7 +2,7 @@ require 'fakeredis'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'minitest/spec'
-#require 'pry-rescue/minitest' Uncomment this if you are debugging locally
+# require 'pry-rescue/minitest' # Uncomment this if you are debugging locally
 require 'shoulda'
 require 'timecop'
 require 'circuit_b'

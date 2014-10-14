@@ -170,6 +170,48 @@ module CircuitB
       end
     end
 
+    interface_tests = lambda do
+      describe 'fuse#failures' do
+        should 'be 0 when initialized' do
+          assert_equal 0, @fuse.failures
+        end
+
+        should 'be 1 after failure' do
+          do_failure(@fuse)
+          assert_equal 1, @fuse.failures
+        end
+      end
+    end
+
+    context 'storage adapter' do
+
+      options = { allowed_failures: 1, cool_off_period: 60 }
+
+      context 'memory' do
+        before do
+          @fuse = memory_fuse
+          @fuse.reset
+        end
+        interface_tests.call
+      end
+
+      context 'redis' do
+        before do
+          @fuse = CircuitB::Fuse.new('name', CircuitB::Storage::Redis.new, options)
+          @fuse.reset
+        end
+        interface_tests.call
+      end
+
+      context 'railscache' do
+        before do
+          @fuse = CircuitB::Fuse.new('name', CircuitB::Storage::RailsCache.new, options)
+          @fuse.reset
+        end
+        interface_tests.call
+      end
+    end
+
     def do_failure(_fuse, rethrow = false)
       @fuse.wrap do
         fail 'Exceptional code'
