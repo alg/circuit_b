@@ -27,6 +27,36 @@ module CircuitB
       end
     end
 
+    describe 'base store' do
+      before do
+        @store = Base.new
+      end
+
+      it 'fails put with NotImplementedError' do
+        begin
+          @store.put('fuse_name', 'field', nil)
+        rescue NotImplementedError => e
+          assert_equal e.class, NotImplementedError
+        end
+      end
+
+      it 'fails get with NotImplementedError' do
+        begin
+          @store.get('fuse_name', 'field')
+        rescue NotImplementedError => e
+          assert_equal e.class, NotImplementedError
+        end
+      end
+
+      it 'fails inc with NotImplementedError' do
+        begin
+          @store.inc('fuse_name', 'field')
+        rescue NotImplementedError => e
+          assert_equal e.class, NotImplementedError
+        end
+      end
+    end
+
     describe 'memory store' do
       before do
         @store = Memory.new

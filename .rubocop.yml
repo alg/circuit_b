@@ -28,5 +28,8 @@ Style/FileName:
 Style/AccessorMethodName:
   Enabled: false
 
+Style/TrivialAccessors:
+  Enabled: false
+
 Style/MethodName:
   Enabled: false

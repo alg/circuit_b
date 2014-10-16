@@ -79,7 +79,7 @@ module CircuitB
       put(:failures, 0)
 
       # TODO(jpg): Shouldn't this be -closing- fuse? Do we parse this log anywhere?
-      log_info "Opening fuse #{@name}"
+      Fuse.log_info "Opening fuse #{@name}"
     end
 
     # Open the fuse
@@ -88,7 +88,9 @@ module CircuitB
       return unless config[:on_break]
       require 'timeout'
 
-      handlers = [config[:on_break]].flatten.map { |handler| (handler.is_a?(Symbol) ? STANDARD_HANDLERS[handler] : handler) }.compact
+      handlers = [config[:on_break]].flatten.map do |handler|
+        handler.is_a?(Symbol) ? STANDARD_HANDLERS[handler] : handler
+      end.compact
 
       handlers.each do |handler|
         begin
@@ -115,11 +117,11 @@ module CircuitB
       @state_storage.inc(@name, field)
     end
 
-    def log_info(message)
+    def self.log_info(message)
       ::Rails.logger.info(message) if defined?(::Rails.logger)
     end
 
-    def log_error(message)
+    def self.log_error(message)
       ::Rails.logger.error(message) if defined?(::Rails.logger)
     end
   end

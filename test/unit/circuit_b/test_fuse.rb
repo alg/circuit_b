@@ -118,6 +118,14 @@ module CircuitB
           assert_equal @fuse, handler_fuse
         end
 
+        should 'call standard rails_log handler' do
+          @fuse = memory_fuse(on_break: :rails_log)
+
+          do_failure(@fuse)
+
+          assert_equal ::Rails.logger.last, "CircuitB: Fuse 'name' has broken"
+        end
+
         should 'call all of handlers' do
           handler_calls = 0
           handler = ->(_fuse) { handler_calls += 1 }
