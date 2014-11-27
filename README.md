@@ -79,6 +79,8 @@ the fuse state that you can use:
 	for distributed setups (like multiple workers in Rails and alike)
 	and acts like a simple IPC.
 
+* _CircuitB::Storage::RailsCacheStore_ -- reuse your rails store.
+        make sure your rails cache store supports the Rails.cache.increment operation.
 
 Acting on Fuse Breaks
 =====================

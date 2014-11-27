@@ -4,7 +4,7 @@ module CircuitB
 
       describe 'storage' do
         before do
-          @store.put('fuse_name', 'field', nil)
+          @store.put('fuse_name', 'field', 0)
         end
 
         it 'stores fuse states with put and return value' do
