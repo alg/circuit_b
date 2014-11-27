@@ -78,8 +78,7 @@ module CircuitB
       put(:state, :closed)
       put(:failures, 0)
 
-      # TODO(jpg): Shouldn't this be -closing- fuse? Do we parse this log anywhere?
-      Fuse.log_info "Opening fuse #{@name}"
+      Fuse.log_info "Closing fuse=#{@name}"
     end
 
     # Open the fuse
