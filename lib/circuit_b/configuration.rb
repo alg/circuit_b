@@ -1,20 +1,19 @@
-require "circuit_b/storage"
-require "circuit_b/fuse"
+require 'circuit_b/storage'
+require 'circuit_b/fuse'
 
 module CircuitB
   class Configuration
-
     DEFAULT_CONFIG = {
-      :log              => true,
-      :timeout          => 5, # seconds
-      :allowed_failures => 5,
-      :cool_off_period  => 10 # seconds
+      log: true,
+      timeout: 5, # seconds
+      allowed_failures: 5,
+      cool_off_period: 10 # seconds
     }
-    
+
     attr_accessor :state_storage
-    attr_reader   :default_fuse_config
-    attr_reader   :fuses
-    
+    attr_reader :default_fuse_config
+    attr_reader :fuses
+
     def initialize
       @state_storage = CircuitB::Storage::Memory.new
       @default_fuse_config = DEFAULT_CONFIG.clone
@@ -28,14 +27,14 @@ module CircuitB
     #   CircuitB.configure do |c|
     #     c.default_fuse_config = {
     #       :on_break         => [ :rails_log, lambda { do_something } ],
-		#       :allowed_failures => 2,
-		#       :cool_off_period  => 3	# seconds
+    #       :allowed_failures => 2,
+    #       :cool_off_period  => 3	# seconds
     #     }
     #   end
     def default_fuse_config=(config)
       @default_fuse_config = DEFAULT_CONFIG.merge(config)
     end
-    
+
     # Adds a fuse with a given name and custom config.
     # If the fuse with the same name is already there, the RuntimeError is raised.
     # The values of the provided configuration are used to override
@@ -46,11 +45,10 @@ module CircuitB
     #     c.fuse "image-resizing", :allowed_failures => 2, :cool_off_period => 30
     #   end
     def fuse(name, config = {})
-      raise "Fuse with this name is already registered" if @fuses.include?(name)
+      fail 'Fuse with this name is already registered' if @fuses.include?(name)
 
       config = @default_fuse_config.merge(config || {})
       @fuses[name] = CircuitB::Fuse.new(name, state_storage, config)
     end
-    
   end
 end

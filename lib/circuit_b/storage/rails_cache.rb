@@ -3,23 +3,22 @@ require 'redis'
 
 module CircuitB
   module Storage
-    class Redis < Base
+    class RailsCache < Base
       def initialize
-        host = ENV['REDIS_HOST'] || 'localhost'
-        port = ENV['REDIS_PORT'] || '6379'
-        @redis = ::Redis.new(host: host, port: port)
+        @cache = ::Rails.cache
       end
 
       def put(fuse_name, field, value)
-        @redis[key(fuse_name, field)] = value
+        value if @cache.write(key(fuse_name, field), value, raw: true)
       end
 
       def get(fuse_name, field)
-        @redis[key(fuse_name, field)]
+        @cache.read(key(fuse_name, field), raw: true)
       end
 
       def inc(fuse_name, field)
-        @redis.incr(key(fuse_name, field))
+        k = key(fuse_name, field)
+        @cache.increment(k)
       end
 
       private
